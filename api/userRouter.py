@@ -2,6 +2,8 @@ from hashlib import md5
 from importlib.resources import Resource
 from flask_restful import reqparse, Resource
 
+from db import get_db
+
 
 
 
@@ -18,7 +20,6 @@ class User(Resource):
 
         db=get_db()
 
-        
         collection_user = db["user-data"]
         user_data = collection_user.find_one({"username": username})
 

@@ -7,10 +7,12 @@ from userRouter import User
 app = Flask(__name__)
 api = Api(app)
 
-
+app.logger.info("Server Initiated.")
 api.add_resource(Generator, "/generator/<int:genNum>")
 api.add_resource(User, "/login")
 api.add_resource(Preditions, "/predictions")
+app.logger.info("Api resources loaded.")
+app.logger.info("Api running.")
 
 
 if __name__ == "__main__":

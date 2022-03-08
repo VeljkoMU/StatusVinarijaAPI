@@ -1,4 +1,3 @@
-import sys
 import pymongo as mongodb
 
 
@@ -10,5 +9,3 @@ db = mongoClient["StatusVinarija"]
 
 def get_db():
     return db
-
-print(sys.path)
