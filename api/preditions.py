@@ -2,6 +2,7 @@
 
 from flask import make_response
 from flask_restful import Resource
+from userRouter import User
 
 
 class Preditions(Resource):

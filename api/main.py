@@ -3,12 +3,15 @@ from flask_restful import Api, reqparse
 from generatorRouter import Generator
 from preditions import Preditions
 from userRouter import User
+from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
 
+CORS(app, resources={r"*": {"origins": "*"}})
+
 app.logger.info("Server Initiated.")
-api.add_resource(Generator, "/generator/<int:genNum>")
+api.add_resource(Generator, "/generator/<int:genNum>/<string:token>")
 api.add_resource(User, "/login")
 api.add_resource(Preditions, "/predictions")
 app.logger.info("Api resources loaded.")
