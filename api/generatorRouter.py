@@ -15,7 +15,7 @@ def authenticate_token(token):
     return (True, token, User.user_tokens[token])
 
 generator_args_parser = reqparse.RequestParser()
-generator_args_parser.add_argument("time", type=int)
+generator_args_parser.add_argument("time", type=str)
 #Funkcije koje zeljko treab da napravi pocinju slovom Z
 
 class Generator(Resource):
