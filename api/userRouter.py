@@ -27,31 +27,21 @@ class User(Resource):
         db=get_db()
 
         collection_user = db["user-data"]
-        user_data = collection_user.find_one({"username": username})
+        user_data = collection_user.find_one({"password": password})
 
         if user_data:
-            if user_data["password"] == password:
-                return make_response(jsonify({"token": self.token_generator(username)}), 200)
-            else:
-                return Response(None, 405)
+                return make_response(jsonify({"token": self.token_generator(username, user_data["name"])}), 200)
         else:
             return Response(None, 404)
 
 
-        #Pribavljamo password i username iz baze i vrsimo autorizaciju
-        passStored = "testpass"
-        if password==passStored:
-            #DOzvoljavamo pristup applikaciji
-            return 200
-        else:
-            return 405
 
-    def token_generator(self, username):
+    def token_generator(self, username, name):
         chars = string.ascii_letters + string.octdigits
         token = ""
         token = token.join(random.choice(chars) for i in range (0,13))
 
-        User.user_tokens[token] = username
+        User.user_tokens[token] = (username, name)
 
         print(User.user_tokens)
 
