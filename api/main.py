@@ -12,7 +12,7 @@ CORS(app, resources={r"*": {"origins": "*"}})
 
 app.logger.info("Server Initiated.")
 api.add_resource(Generator, "/generator/<int:genNum>/<string:token>")
-api.add_resource(User, "/login")
+api.add_resource(User, "/login/<string:token>")
 api.add_resource(Preditions, "/predictions")
 app.logger.info("Api resources loaded.")
 app.logger.info("Api running.")

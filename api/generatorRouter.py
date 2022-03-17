@@ -3,16 +3,8 @@ from datetime import datetime
 from flask import Response, jsonify, make_response
 from flask_restful import Resource, reqparse
 from custom_logger import CustomLogger
-from userRouter import User
+from userRouter import User, authenticate_token
 
-
-def authenticate_token(token):
-    print(token)
-    print(User.user_tokens)
-    if token not in User.user_tokens:
-        return (False, "", "")
-    
-    return (True, token, User.user_tokens[token])
 
 generator_args_parser = reqparse.RequestParser()
 generator_args_parser.add_argument("time", type=str)

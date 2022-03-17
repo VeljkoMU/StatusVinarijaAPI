@@ -8,16 +8,24 @@ from db import get_db
 
 
 
-
 user_data_args_parser = reqparse.RequestParser()
 user_data_args_parser.add_argument("username", type=str)
 user_data_args_parser.add_argument("password", type=str)
+user_data_args_parser.add_argument("name", type=str, required=False)
+
+def authenticate_token(token):
+    print(token)
+    print(User.user_tokens)
+    if token not in User.user_tokens:
+        return (False, "", "")
+    
+    return (True, token, User.user_tokens[token])
 
 class User(Resource):
 
     user_tokens=dict()
 
-    def post(self):
+    def post(self, token):
         print(user_data_args_parser.parse_args()["password"])
         username = user_data_args_parser.parse_args()["username"]
         password = str(md5(user_data_args_parser.parse_args()["password"].encode("utf-8")).hexdigest())
@@ -35,6 +43,21 @@ class User(Resource):
             return Response(None, 404)
 
 
+    def put(self, token):
+        if not authenticate_token(token)[0] or authenticate_token(token)[2][0]!="administrator":
+            return Response(None, 405)
+
+        username = user_data_args_parser.parse_args()["username"]
+        password = str(md5(user_data_args_parser.parse_args()["password"].encode("utf-8")).hexdigest())
+        name = user_data_args_parser.parse_args()["name"]
+
+        db = get_db()
+        collection_user = db["user-data"]
+        collection_user.insert_one({
+            "username": username,
+            "password": password,
+            "name": name
+        })
 
     def token_generator(self, username, name):
         chars = string.ascii_letters + string.octdigits
