@@ -42,6 +42,8 @@ class Generator(Resource):
             return Response(None, 403)
 
         print(time)
+        pt = datetime(int(time[0:4]),int(time[5:7]), int(time[8:10]), int(time[11:13]), int(time[14:]))
+        print(pt)
         isSuccsessful = True
         #Zeljko, ova funkcija treab da vraca True ako je uspesno zakazano praznjenje i punjenje
         #isSuccsessful = ZzakaziOperaciju(genNum, time)
