@@ -15,8 +15,6 @@ class Generator(Resource):
     logger = CustomLogger()
 
     def get(self, genNum, token):
-        if not authenticate_token(token)[0]:
-            return Response(None, 405)
         #Ovde se pribavljaju infomracije o generatoru (stanje senzora1 i senzora2 i da li se generator puni ili prazni)
         #state je promenjiva koja cuva stanja, ovo treba da vrati Zeljkova funkcija koja cita stanja generatora
         state = {
@@ -29,7 +27,7 @@ class Generator(Resource):
         return make_response(jsonify(state), 200)
         
     def post(self, genNum, token):
-        if not authenticate_token(token)[0] or authenticate_token(token)[2][0]!="upravljac":
+        if not authenticate_token(token)[0] or (authenticate_token(token)[2][0]!="upravljac" and authenticate_token(token)[2][0]!="administrator"):
             return Response(None, 405)
 
         time = generator_args_parser.parse_args()['time']

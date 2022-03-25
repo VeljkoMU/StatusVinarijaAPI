@@ -4,7 +4,9 @@ from flask import Response, jsonify, make_response
 from flask_restful import reqparse, Resource
 import random
 import string
-from db import get_db
+from db import get_db_user
+from tinydb import TinyDB, Query
+
 
 
 
@@ -32,10 +34,14 @@ class User(Resource):
 
         print(username + " " + password)
 
-        db=get_db()
+        if username == "posmatrac":
+            return make_response(jsonify({"token": "gggg"}, 200))
 
-        collection_user = db["user-data"]
-        user_data = collection_user.find_one({"password": password})
+        db=get_db_user()
+
+        q = Query()
+        user_data = db.search(q.username==username)[0]
+        print(user_data)
 
         if user_data:
                 return make_response(jsonify({"token": self.token_generator(username, user_data["name"])}), 200)
@@ -51,9 +57,9 @@ class User(Resource):
         password = str(md5(user_data_args_parser.parse_args()["password"].encode("utf-8")).hexdigest())
         name = user_data_args_parser.parse_args()["name"]
 
-        db = get_db()
-        collection_user = db["user-data"]
-        collection_user.insert_one({
+        db = get_db_user()
+
+        db.insert({
             "username": username,
             "password": password,
             "name": name

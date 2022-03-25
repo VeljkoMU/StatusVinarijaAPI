@@ -1,15 +1,16 @@
 
 from flask import jsonify
-from db import get_db
+from db import get_db_logs
+from tinydb import TinyDB, Query
+
 
 
 class CustomLogger:
     def __init__(self):
-        self.db= get_db()
-        self.collection_log = self.db["op-log"]
+        self.db= get_db_logs()
     
     def enter_log(self, time, name):
-        self.collection_log.insert_one({
+        self.db.insert({
             "time": time,
             "user": name,
             "date": time[0:10],
@@ -17,14 +18,15 @@ class CustomLogger:
         })
     
     def check_availability(self, time):
-        log = self.collection_log.find_one({"time": time})
+        q = Query()
+        log = self.db.search(q.time==time)
 
         if log:
             return False
         else:
             date = time[0:10]
             hours = int(time[11:13])
-            s1 = self.collection_log.find({"date": date})
+            s1 = self.db.search(q.date == date)
             if not s1:
                 return True
             for i in s1:

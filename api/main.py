@@ -4,6 +4,11 @@ from generatorRouter import Generator
 from preditions import Preditions
 from userRouter import User
 from flask_cors import CORS
+from tinydb import TinyDB, Query
+from db import get_db_user
+
+q = Query()
+get_db_user().insert({"username": "administrator", "password":"e4af7c17be96d50f0c4766bffc337beb", "name": "Weki"})
 
 app = Flask(__name__)
 api = Api(app)
