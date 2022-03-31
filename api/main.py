@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_restful import Api, reqparse
-from generatorRouter import Generator
+from generatorRouter import Generator, telegram_main
 from preditions import Preditions
 from userRouter import User
 from flask_cors import CORS
@@ -25,3 +25,4 @@ app.logger.info("Api running.")
 
 if __name__ == "__main__":
     app.run(debug=True)
+    telegram_main()
